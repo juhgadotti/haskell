@@ -49,7 +49,6 @@ public class Binario{}
 public class Zero extends Binario{}
 -}
 
-
 --Record Syntax
 data Pessoa = Fisica{nome::String, cpf::String} | Juridica{nome::String, cnpj::String} deriving Show
 
