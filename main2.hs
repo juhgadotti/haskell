@@ -21,11 +21,50 @@ pmTupla (x,y) = x + y
 --pattern matching de lista
 pmLista :: [Int] -> Int
 pmLista [] = 0
-pmLista [x] = x
+pmLista [x] = x 
 pmLista [x, y] = y
 pmLista [z, y, x] = z
 
-pmLista()
+pmLista (x:z:y:xs) = somarUm x
 
 somarUm :: Int -> Int
 somarUm x = x + 1
+
+--tipos de dados algebricos
+
+data Binario = Zero | Um deriving Show
+
+binarioParaInt :: Binario -> Int
+binarioParaInt Um = 1
+binarioParaInt Zero = 0
+
+intParaBinario :: Int -> Binario
+intParaBinario 0 = Zero
+intParaBinario 1 = Um
+
+
+
+{-
+public class Binario{}
+public class Zero extends Binario{}
+-}
+
+
+--Record Syntax
+data Pessoa = Fisica{nome::String, cpf::String} | Juridica{nome::String, cnpj::String} deriving Show
+
+
+
+
+{-
+data Pessoa = Fisica String Int | Juridica String Int deriving Show
+
+getNome :: Pessoa -> String
+getNome (Fisica nome cpf) = nome
+getNome (Juridica nome cnpj) = nome
+
+
+setNome :: Pessoa -> String -> Pessoa
+setNome (Fisica nome cpf) novoNome = 
+    Fisica novoNome cpf
+-}

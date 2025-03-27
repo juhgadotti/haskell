@@ -1,0 +1,8 @@
+no terminal:
+ghci
+:l main.hs
+
+-l exit
+:q
+
+reload :r
