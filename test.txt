@@ -1,0 +1,31 @@
+Prova
+:t inspeciona o tipo de valor
+:t True  -> True :: Bool   (le-se :: como tem o tipo)
+número de flechas (->) acompanha o número de parâmetros admitidos
+u :: Int    u = 7  (= não é atribuição, os dados são imutaveis, é um retorno constante)
+‘ simples é char “ duplas é string
+
+Listas
+inspeção no ghci:
+Prelude>:t [True, False, True]         [True, False, True] :: [Bool]
+++ concatenação entre duas listas, sobre qualquer tipo de dado
+head: primeiro / last: ultimo / tail: lista sem o primeiro / reverse: inverte
+!! recebe um int e retorna o elemtno da lista na posição [1,2,3,4] !! 2   3
+: recebe elemento e lista, insere na frente da lista  ‘A’ : “BCD”   “ABCD”
+
+compreensão de listas
+construir listas com expressões q podem ser distribuídas a todos elementos de um vetor
+ [EXPRESSÃO(var)	| var<-LISTA,	FILTRO_1, FILTRO_2, ..., FILTRO_n ] 
+expressão  é qualquer função que será distribuída nos elementos	da lista, representados por var	, com os elementos que passem na condição dos filtros. Veja um exemplo: 	dobroLista :: [Int] -> [Int]        dobroLista xs = [2*x | x<-xs] 
+recebe uma lista de inteiros (sem tamanho definido) e retorna uma lista de inteiros com o dobro de cada elemento x, contido em xs.
+o :t aqui vai retornar [Int] por ser uma lista de int, sendo uma [Int] -> [Int]
+o tipo definido após a última -> representa o retorno
+
+lista :: [Int]       lista = [2*x+1 | x<-[0 .. 10], x/=5]
+primeiro param se distribui pro resto da lista [0..10] menos o numero 5 q nao passa no filtro
+retorno [1, 3, 5,	7, 9, 13, 15, 17,	19, 21]
+ ex: [ x | x<-"te amo neymar", x /= 'a']      ”te mo neymr"
+
+tuplas
+vários tipos de elementos mas tamanho fixo (n da pra usar : nem ++) imutaveis, local do elemento é coordenada.
+Prelude>:t ('A',"ALO") ('A',"ALO") :: (Char, [Char]) A  resposta  obtida  indica que ('A',"ALO")  	 tem o tipo (Char, [Char])	,que implica que a primeira coordenada	possui o tipo Char e a segunda [Char] ou String. Função usando tupla: foo :: Char -> Int	-> (Int,	String)     foo x	y = (y+9, x:[x])
