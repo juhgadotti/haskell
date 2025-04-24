@@ -6,3 +6,12 @@ ghci
 :q
 
 reload :r
+
+//polimorfismo antietico
+
+
+"kind"
+
+ghci> :k Caixa 
+Caixa :: * -> *
+ghci> 
