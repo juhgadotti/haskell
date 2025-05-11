@@ -1,0 +1,88 @@
+:t True  -> True :: Bool   (le-se :: como tem o tipo)
+número de flechas (->) acompanha o número de parâmetros admitidos
+u :: Int    u = 7  (= não é atribuição, os dados são imutaveis, é um retorno constante)
+‘ simples é char “ duplas é string   [ ] sei tamanho   ( ) nao sei tamanho  even par=true impar=false, odd é oposto
+
+Listas
+Prelude>:t [True, False, True]         [True, False, True] :: [Bool]
+++ concatenação entre duas listas, sobre qualquer tipo de dado
+head: primeiro / last: ultimo / tail: lista sem o primeiro / reverse: inverte
+!! recebe um int e retorna o elemtno da lista na posição [1,2,3,4] !! 2   3
+: recebe elemento e lista, insere na frente da lista  ‘A’ : “BCD”   “ABCD”
+
+compreensão de listas
+construir listas com expressões q podem ser distribuídas a todos elementos de um vetor
+ [EXPRESSÃO(var)	| var<-LISTA,	FILTRO_1, FILTRO_2, ..., FILTRO_n ] 
+expressão  é qualquer função que será distribuída nos elementos da lista, representados por var , com os elementos que passem na condição dos filtros. Veja um exemplo:  dobroLista :: [Int] -> [Int] dobroLista xs = [2*x | x<-xs] 
+recebe uma lista de inteiros (sem tamanho definido) e retorna uma lista de inteiros com o dobro de cada elemento x, contido em xs.
+o :t aqui vai retornar [Int] por ser uma lista de int, sendo uma [Int] -> [Int]
+o tipo definido após a última -> representa o retorno
+
+lista :: [Int]       lista = [2*x+1 | x<-[0 .. 10], x/=5]   //um for com if, if(true) vai pro vetor
+primeiro param se distribui pro resto da lista [0..10] menos o numero 5 q nao passa no filtro
+retorno [1, 3, 5,	7, 9, 13, 15, 17,	19, 21]      ex: [ x | x<-"te amo neymar", x /= 'a']      ”te mo neymr"
+
+tuplas
+vários tipos de elementos mas tamanho fixo (n da pra usar : nem ++) imutaveis, local do elemento é coordenada.
+Prelude>:t ('A',"ALO") ('A',"ALO") :: (Char, [Char]) A  resposta  obtida  indica que ('A',"ALO")  	 tem o tipo (Char, [Char])	,que implica que a primeira coordenada	possui o tipo Char e a segunda [Char] ou String. Função usando tupla: foo :: Char -> Int	-> (Int,	String)     foo x	y = (y+9, x:[x])
+fst e snd mostram 1 e 2 coordenada de uma tupla
+:t (2, “2”)        saida:  (2, “2”) :: Num a => (a, string)
+
+declarando novos tipos de dados
+utilizando a palavra data .     data Dia = Segunda | Terca	| Quarta |   Quinta | Sexta  | Sabado | Domingo
+:t Terça   Terça::Dia
+novas funções como:  agenda :: Dia	->  String     agenda Domingo	 = "TV..."  agenda	Sabado = "Festa"   agenda _ = "Trabalho" // _ é todo aquele q nao for sab ou dom
+
+f :: (Int,	Int) ->	Int  . f (0,0) = 0 . f (0,1) = 1 . f (1,0) = 1 . f (x,0) = x . f (0,y) = y . f (x,y) = x+y
+prelude f> (0,0)  res 0. (0,1) res 1.  (0,-90) res -90 pois se encaixa em (0,y)=y
+ (0,0) valores fixos nas 2 coordenadas; (x,0)  valor variável	na 1 e	fixo na 2; (0,y)	valor fixo na 1 e	variável na 2; (x,y) valores variáveis	nas 2 (devem possuir	nomes	diferentes).
+_ ignora o valor. (_,_) = 0
+h :: [Int] -> Int
+h [] = 0                              -- Lista vazia → retorna 0
+h (_:[]) = 1                          -- Lista com 1 elemento → retorna 1
+h (_:x:[]) = 2 + x                    -- Lista com 2 elementos → ignora o 1º, soma 2 + 2º
+h (x:y:z:[]) = 3 + x + y + z         -- Lista com 3 elementos → soma 3 + todos
+h (x:_:_:w:[]) = 4 + x + w           -- Lista com 4 elementos → ignora 2º e 3º, soma 4 + 1º + 4º
+h (x:xs) = x                         -- Qualquer lista maior ou não-casada antes → retorna só o primeiro
+ex 5 elementos: [1,2,3,4,5]  1:[2,3,4,5] ou seja [x:xs] = x ou seja = 1 
+
+campos de construtor
+ data Pessoa	= Fisica	String Int | Juridica String //fisica tem 2 campos e juridica 1
+ Aula3>	:t Fisica Fisica ::	String -> Int -> Pessoa // Aula3>	:t Juridica Fisica	:: String	-> Pessoa
+ teste :: Pessoa -> (String, String)  teste (Fisica x y) = ("Nome: " ++ x, "Idade: " ++ show y) teste (Juridica x) = ("Nome: " ++ x, "Não há idade") aqui converte string pra int e int pra string
+
+newtype Dado = Dado int  //só pode ter um value constructor e um campo, “apelido” pra tipo existente (ex. int)
+
+record syntax
+básica: data Pessoa = Pessoa String Int   se acessar depois, vai ter que fazer um pattern matching manual
+nome (Pessoa n _) = n    idade (Pessoa _ i) = i            vantagens: nomeia os campos, compilador gera os getters
+c/ record syntax:  data Pessoa = Pessoa { nome :: String, idade :: Int }        +legivel e facil de construir/att valores
+ghci> let p = Pessoa { nome = "João", idade = 30 }
+
+data Carro = Carro {modelo :: String, ano :: Int, preco :: Double} deriving Show
+
+(\<parâmetros> -> <expressão <parâmetro> >)  lambda  (\x -> x * 2) //recebe x tal q o retorno é x*2
+pode-se ter quantos parametros quiser   (\x y -> x + y) 5 10   => 15
+1 passa param e depois a definição 
+ev :: (Int -> Int) -> Int     ev funcao = 1 + funcao 5 a função ev consiste em uma entrada funcao do tipo (Int -> Int), que irá retornar uma saída Int. Note que o tipo de dado da função de entrada é (Int -> Int), esses parenteses indicam que este parâmetro recebido é uma função que deve obrigatóriamente receber um Int e retornar um Int
+1. ev funcao = 1 + funcao 5           ev triplo => 16                triplo :: Int -> int
+2. ev triplo = 1 + triplo 5                                                       triplo x = x* 3
+3. ev triplo = 1 + (5 * 3)
+4. ev triplo = 1 + 15
+5. ev triplo = 16   => 16
+map :: (a -> b) -> [a] -> [b]      double :: Int -> Int       double x = x * 2
+lista :: [Int]   lista = [1,2,3,4,5]    map double lista  => [2,4,6,8,10]
+filter :: (a -> Bool) -> [a] -> [a] 
+filter (\x -> x `mod` 2 == 0) [1..10] => [2,4,6,8,10] //pegar pares   // filter (> 5) [1..10] -- [6,7,8,9,10]   //maiores q 5
+4.1)função q retorne a média de	um [Double] , usandofoldl.    media :: [Double] -> Double
+media xs = foldl (+) 0 xs / fromIntegral (length xs)
+4.2)função  que  receba	 uma [String] e retorne todos os	elementos palíndromos.	 palindromos :: [String] -> [String]
+palindromos xs = filter (\x -> x == reverse x) xs
+4.3) função que filtre os  números pares	 e outra	que filtre os ímpares de	uma lista recebida via parâmetro. 
+soPares :: [Int] -> [Int]            soPares = filter even             soImpares :: [Int] -> [Int]         soImpares = filter odd
+4.4) Filtre os  números primos de uma lista recebida por parâmetro.  ehPrimo :: Int -> Bool
+ehPrimo n   | n < 2 = False     | otherwise = null [x | x <- [2..n-1], n `mod` x == 0]  
+filtrarPrimos :: [Int] -> [Int]    filtrarPrimos = filter ehPrimos
+ 4.5)função que	receba	uma lista de inteiros e retorne o	dobro de todos,	eliminando os múltiplos	de 4. 
+dobroSemMult4 :: [Int] -> [Int]    dobroSemMult4 xs = filter (\x -> x `mod` 4 /= 0) (map (*2) xs)
+
